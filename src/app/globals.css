@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
+@theme {
+  --color-arciform-bg: #FAFAFA;
+  --color-arciform-card: #FFFFFF;
+  --color-arciform-ink: #121212;
+  --color-arciform-muted: #525252;
+  --color-arciform-border: #E5E5E5;
+  --color-arciform-ghost: #F0F0F0;
+  --color-arciform-accent: #C06C47;
+}
+
+/* ─── Design Tokens ───────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg:        #FAFAFA;
+  --ink:       #121212;
+  --muted:     #525252;
+  --accent:    #C06C47;
+  --border:    #E5E5E5;
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ─── Base Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Selection ───────────────────────────────────────────────── */
+::selection { background: var(--ink); color: var(--bg); }
+
+/* --- Hero Mobile Optimizations ------------------------------- */
+.hero-section {
+  padding: 100px 1.25rem 60px !important;
+}
+.hero-grid {
+  grid-template-columns: 1fr !important;
+  gap: 3rem !important;
+}
+.hero-image-wrapper {
+  min-height: 300px !important;
+}
+
+@media (min-width: 1024px) {
+  .hero-section {
+    padding: 120px 2.5rem 80px !important;
+  }
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.9fr) !important;
+    gap: 2.5rem !important;
+  }
+  .hero-image-wrapper {
+    min-height: 420px !important;
+  }
 }
