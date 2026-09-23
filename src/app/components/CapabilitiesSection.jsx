@@ -1,6 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import MaskReveal from "./MaskReveal";
+import ShutterReveal from "./ShutterReveal";
 
 const STATS = [
   {
@@ -83,8 +86,18 @@ const OFFERINGS = [
 ];
 
 export default function CapabilitiesSection() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const watermarkY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+
   return (
-    <section className="relative w-full bg-[#FAFAFA] text-neutral-900 border-t border-neutral-200 py-24 px-6 md:px-12 flex flex-col items-center overflow-hidden">
+    <section ref={sectionRef} style={{
+      paddingTop:"5vw",
+      paddingBottom:"7vw"
+    }} className="relative w-full bg-[#FAFAFA] text-neutral-900 border-t border-neutral-200 py-24 px-6 md:px-12 flex flex-col items-center overflow-hidden">
       {/* Structural Grid Guides */}
       <div className="absolute inset-0 pointer-events-none grid grid-cols-6 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto px-6 md:px-12 lg:px-16 border-x border-neutral-100">
         <div className="border-r border-neutral-100 h-full" />
@@ -95,21 +108,32 @@ export default function CapabilitiesSection() {
       </div>
 
       {/* Centered Watermark Numeral */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none z-0">
-        <span className="text-[20rem] md:text-[28rem] font-bold font-sans tracking-tighter text-neutral-100/80 leading-none">
+      <motion.div
+        className="absolute left-[60%] top-50 h-full w-full select-none pointer-events-none z-0"
+        style={{ y: watermarkY }}
+      >
+        <span className="text-[20rem] md:text-[28rem] font-bold font-sans tracking-tighter text-neutral-200/80 leading-none">
           06
         </span>
-      </div>
+      </motion.div>
 
       {/* Main Centered Content Wrapper */}
-      <div className="relative z-10 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto flex flex-col ">
         
         {/* ========================================================================= */}
         {/* 1. STATS TICKER LEDGER (Replacing the brown bar)                          */}
         {/* ========================================================================= */}
-        <div className="w-full border-y border-neutral-200 bg-white/70 backdrop-blur-sm grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-neutral-200 mb-24 shadow-sm">
+        <div 
+     
+        className="w-full border-y px-5 border-neutral-200 bg-white/70 backdrop-blur-sm grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-neutral-200 mb-24 shadow-sm">
           {STATS.map((stat, i) => (
-            <div key={i} className="p-6 md:p-8 flex flex-col justify-between">
+            <div key={i} className="p-6 md:p-8 flex flex-col justify-between" style={{
+              paddingTop:"2vw",
+              paddingBottom:"2vw",
+              paddingLeft:"3vw",
+              paddingRight:"3vw",
+              margin:0
+            }}>
               <span className="font-mono text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 font-sans">
                 {stat.value}
               </span>
@@ -128,22 +152,38 @@ export default function CapabilitiesSection() {
         {/* ========================================================================= */}
         {/* 2. SECTION HEADER                                                         */}
         {/* ========================================================================= */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="h-[1px] w-8 bg-neutral-300" />
+        <div className="flex gap-3 mb-6" style={{ paddingTop:"3vw" }}>
+          <motion.span
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: "left" }}
+            className="inline-block h-[1px] w-8 bg-neutral-300 self-center"
+          />
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-neutral-400">
-            06 // Capabilities & Delivery
+            06 // Capabilities &amp; Delivery
           </p>
-          <span className="h-[1px] w-8 bg-neutral-300" />
+          <motion.span
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ transformOrigin: "left" }}
+            className="inline-block h-[1px] w-8 bg-neutral-300 self-center"
+          />
         </div>
 
-        <h2 className="text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl font-sans font-bold text-center tracking-tight text-neutral-900 max-w-4xl leading-[1.1] mb-6">
-          Comprehensive project execution, from{" "}
-          <span className="font-serif italic font-normal text-[#C06C47]">
-            cadastre to turnkey build.
-          </span>
-        </h2>
+        <MaskReveal>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl font-sans font-bold tracking-tight text-neutral-900 max-w-4xl leading-[1.1] mb-6">
+            Comprehensive project execution, from{" "}
+            <span className="font-serif italic font-normal text-[#C06C47]">
+              cadastre to turnkey build.
+            </span>
+          </h2>
+        </MaskReveal>
 
-        <p className="text-sm md:text-base text-neutral-600 font-light text-center max-w-2xl leading-relaxed mb-16">
+        <p className="text-sm md:text-base text-neutral-600 font-light  max-w-2xl leading-relaxed mb-16">
           Every commission is approached as a synthesis of structural rigor,
           environmental stewardship, and municipal compliance.
         </p>
@@ -151,7 +191,7 @@ export default function CapabilitiesSection() {
         {/* ========================================================================= */}
         {/* 3. CAPABILITIES GRID (Replacing the cartoon icon cards)                   */}
         {/* ========================================================================= */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div style={{paddingTop:"1vw"}} className="w-full  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {OFFERINGS.map((item) => (
             <div
               key={item.code}
@@ -169,24 +209,26 @@ export default function CapabilitiesSection() {
                 </div>
 
                 {/* Aspect 16:9 Image Frame */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 mb-5 border border-neutral-200">
+                <ShutterReveal className="relative aspect-[16/10] w-full bg-neutral-100 mb-5 border border-neutral-200">
                   <img
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover grayscale contrast-[1.05] transition-all duration-500 ease-out group-hover:grayscale-0 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-neutral-900/10 opacity-50 group-hover:opacity-0 transition-opacity" />
+                </ShutterReveal>
+
+                <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
+                  {/* Title */}
+                  <h3 className="text-xl font-bold tracking-tight text-neutral-900 group-hover:text-[#C06C47] transition-colors mb-2">
+                    {item.title}
+                  </h3>
+  
+                  {/* Scope Summary */}
+                  <p className="text-xs text-neutral-600 font-light leading-relaxed mb-6">
+                    {item.summary}
+                  </p>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold tracking-tight text-neutral-900 group-hover:text-[#C06C47] transition-colors mb-2">
-                  {item.title}
-                </h3>
-
-                {/* Scope Summary */}
-                <p className="text-xs text-neutral-600 font-light leading-relaxed mb-6">
-                  {item.summary}
-                </p>
               </div>
 
               {/* Action Footer */}

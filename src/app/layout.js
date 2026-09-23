@@ -38,15 +38,15 @@ export default function RootLayout({ children }) {
       <body className="min-h-full bg-[#FAFAFA] text-neutral-900 relative selection:bg-[#C06C47] selection:text-white">
         
         {/* Left Architectural Margin Guide */}
-        <div className="hidden lg:flex fixed left-0 top-0 bottom-0 w-12 xl:w-16 border-r border-neutral-200/80 items-center justify-center z-50 pointer-events-none">
-          <span className="font-mono text-[9px] text-neutral-400 tracking-[0.3em] uppercase" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+        <div className="hidden lg:flex fixed left-0 top-0 bottom-0 w-16 border-r border-neutral-200/80 items-center justify-center z-50 pointer-events-none py-12">
+          <span className="font-mono text-[10px] text-neutral-400 tracking-[0.3em] uppercase" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
             GEODETIC DATUM // LAT 21.1873° N, LONG 81.3090° E // ZONE 44N
           </span>
         </div>
 
         {/* Right Architectural Margin Guide */}
-        <div className="hidden lg:flex fixed right-0 top-0 bottom-0 w-12 xl:w-16 border-l border-neutral-200/80 items-center justify-center z-50 pointer-events-none">
-          <span className="font-mono text-[9px] text-neutral-400 tracking-[0.3em] uppercase" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+        <div className="hidden lg:flex fixed right-0 top-0 bottom-0 w-16 border-l border-neutral-200/80 items-center justify-center z-50 pointer-events-none py-12">
+          <span className="font-mono text-[10px] text-neutral-400 tracking-[0.3em] uppercase" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
             ARCIFORM ARCHIVE // 2000–2026 // CENTRAL INDIA
           </span>
         </div>

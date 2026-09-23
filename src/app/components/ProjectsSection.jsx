@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import MaskReveal from "./MaskReveal";
+import MagneticButton from "./MagneticButton";
 
 const PROJECTS = [
   { id: 1, code: "PRJ-01", title: "Matri Vidya Niketan Campus", category: "Institutional", location: "Bhilai, CG", year: "2021", area: "45,000 sq.ft", x: 28, y: 35, imageSrc: "https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?auto=format&fit=crop&w=800&q=80" },
@@ -36,7 +38,7 @@ export default function ProjectsSection() {
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const yParallax = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+  const yParallax = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
   useEffect(() => {
     setIsTouchDevice(window.matchMedia("(hover: none) and (pointer: coarse)").matches);
@@ -86,10 +88,13 @@ export default function ProjectsSection() {
   };
 
   return (
-    <section ref={sectionRef} id="work" className="relative w-full py-14 px-4 sm:px-6 md:px-10 lg:px-16 lg:py-28 2xl:py-36 bg-arciform-bg overflow-hidden flex flex-col items-center border-t border-neutral-200">
+    <section ref={sectionRef} id="work" style={{
+      paddingTop:"7vw",
+      paddingBottom:"5vw"
+    }} className="relative w-full py-14 px-4 sm:px-6 md:px-10 lg:px-16 lg:py-28 2xl:py-36 bg-arciform-bg overflow-hidden flex flex-col items-center border-t border-neutral-200">
       
       {/* Visible Giant 03 Background Index */}
-      <motion.div style={{ y: yParallax }} className="absolute top-[20%] right-[80%] translate-x-1/2 -translate-y-1/2 select-none pointer-events-none z-0">
+      <motion.div style={{ y: yParallax }} className="absolute top-[20%] left-[50%] translate-x-1/2 -translate-y-1/2 select-none pointer-events-none z-0">
         <span className="text-[7rem] sm:text-[11rem] md:text-[16rem] lg:text-[22rem] 2xl:text-[26rem] font-bold font-sans tracking-tighter text-arciform-ghost leading-none">
           03
         </span>
@@ -106,33 +111,43 @@ export default function ProjectsSection() {
         {/* Header Area */}
         <div className="flex flex-col items-start mb-10">
           <div className="flex items-center gap-3 mb-6">
-            <span className="h-[1px] w-8 bg-arciform-border" />
+            <motion.span
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              style={{ transformOrigin: "left" }}
+              className="inline-block h-[1px] w-8 bg-arciform-border"
+            />
             <p className="font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-400">
-              03 // REGIONAL MASTER PLAN & FOOTPRINT
+              03 // REGIONAL MASTER PLAN &amp; FOOTPRINT
             </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-arciform-ink tracking-tight max-w-4xl leading-[1.1]">
-            Spatial distribution of built commissions across{" "}
-            <span className="font-serif italic font-normal text-arciform-accent">
-              Central India.
-            </span>
-          </h2>
+          <MaskReveal>
+            <h2 className="text-4xl sm:text-3xl md:text-7xl lg:text-7xl font-bold text-arciform-ink tracking-tight max-w-4xl leading-[1.1]">
+              Spatial distribution of built commissions across{" "}
+              <span className="font-serif italic font-normal text-arciform-accent">
+                Central India.
+              </span>
+            </h2>
+          </MaskReveal>
         </div>
 
         {/* Filter Bar */}
         <div className="flex flex-wrap items-center gap-2 mb-4 lg:mb-8 w-full overflow-x-auto no-scrollbar pb-2">
           {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider rounded-sm transition-all duration-300 shrink-0 ${
-                activeCategory === cat
-                  ? "bg-arciform-ink text-white"
-                  : "bg-arciform-card text-arciform-muted hover:text-arciform-ink border border-arciform-border"
-              }`}
-            >
-              {cat}
-            </button>
+            <MagneticButton key={cat} strength={0.3}>
+              <button
+                onClick={() => setActiveCategory(cat)}
+                className={`px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-mono uppercase tracking-wider rounded-sm transition-all duration-300 shrink-0 ${
+                  activeCategory === cat
+                    ? "bg-arciform-ink text-white"
+                    : "bg-arciform-card text-arciform-muted hover:text-arciform-ink border border-arciform-border"
+                }`}
+              >
+                {cat}
+              </button>
+            </MagneticButton>
           ))}
         </div>
 

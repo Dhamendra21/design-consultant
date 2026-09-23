@@ -1,35 +1,34 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import MagnifiedHeading from "./MagnifiedHeading";
+import MaskReveal from "./MaskReveal";
+import MagneticButton from "./MagneticButton";
 
-/**
- * Hero Section
- * - Full viewport height
- * - Massive clamp headline with italic serif accent word
- * - Animated "Scroll to explore" indicator at the bottom
- * - Framer Motion high-end entrance animations
- */
 export default function Hero() {
+  const sectionRef        = useRef(null);
   const scrollIndicatorRef = useRef(null);
 
-  // Parallax tilt effect for image
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  /* ── Scroll-driven watermark parallax ── */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const watermarkY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+
+  /* ── Parallax tilt effect for image ── */
+  const x            = useMotionValue(0);
+  const y            = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 100, damping: 30 });
   const mouseYSpring = useSpring(y, { stiffness: 100, damping: 30 });
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["4deg", "-4deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-4deg", "4deg"]);
+  const rotateX      = useTransform(mouseYSpring, [-0.5, 0.5], ["4deg", "-4deg"]);
+  const rotateY      = useTransform(mouseXSpring, [-0.5, 0.5], ["-4deg", "4deg"]);
 
   const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
+    const rect   = e.currentTarget.getBoundingClientRect();
+    const xPct   = (e.clientX - rect.left)  / rect.width  - 0.5;
+    const yPct   = (e.clientY - rect.top)   / rect.height - 0.5;
     x.set(xPct);
     y.set(yPct);
   };
@@ -39,15 +38,9 @@ export default function Hero() {
     y.set(0);
   };
 
-  const headingLines = [
-    { text: "We engineer", isItalic: false },
-    { text: "architectural", isItalic: true },
-    { text: "foundations into", isItalic: false },
-    { text: "living spaces.", isItalic: true },
-  ];
-
   return (
     <section
+      ref={sectionRef}
       id="hero"
       style={{
         minHeight: "100dvh",
@@ -76,11 +69,12 @@ export default function Hero() {
         }}
       />
 
-      {/* ── Decorative number ── */}
+      {/* ── Decorative watermark numeral — scroll parallax ── */}
       <motion.span
         aria-hidden="true"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
+        style={{ y: watermarkY }}
         transition={{ duration: 1.8, ease: "easeOut" }}
         className="absolute top-1/2 right-10 -translate-y-[60%] font-sans font-bold tracking-tighter text-arciform-ghost select-none pointer-events-none leading-none z-0 text-[7rem] sm:text-[11rem] md:text-[16rem] lg:text-[22rem] 2xl:text-[26rem]"
       >
@@ -97,66 +91,62 @@ export default function Hero() {
         }}
         className="hero-grid w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16"
       >
-        <div>
-          {/* Eyebrow label */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="flex items-center gap-3 mb-10"
-          >
-            <span className="inline-block w-8 h-[1px] bg-arciform-border" />
-            <span className="font-mono text-[0.72rem] font-medium tracking-[0.14em] uppercase text-neutral-400">
-              Architecture & Interior Design — Est. 2000
-            </span>
-          </motion.div>
+        <div className="pr-20" style={{ paddingLeft: "2vw", paddingRight: "20px" }}>
 
-          {/* Interactive Magnified Heading */}
+          {/* ── Eyebrow label — mask reveal ── */}
+          <MaskReveal className="mb-10">
+            <div className="flex items-center gap-3">
+              <motion.span
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                style={{ transformOrigin: "left" }}
+                className="inline-block w-8 h-[1px] bg-arciform-border"
+              />
+              <span className="font-mono text-[0.72rem] font-medium tracking-[0.14em] uppercase text-neutral-400">
+                Architecture &amp; Interior Design — Est. 2000
+              </span>
+            </div>
+          </MaskReveal>
+
+          {/* ── Interactive Magnified Heading (has its own reveal) ── */}
           <MagnifiedHeading />
 
-          {/* Subtext row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              marginTop: "3.5rem",
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "flex-start",
-              gap: "3rem",
-            }}
-          >
-            <p
-              className="font-sans font-light text-arciform-muted text-xs sm:text-sm md:text-base leading-relaxed max-w-xl lg:max-w-2xl"
+          {/* ── Subtext row — mask reveal ── */}
+          <MaskReveal delay={0.15} className="mt-14">
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "flex-start",
+                gap: "3rem",
+              }}
             >
-              From Bhoomi Pujan to Griha Pravesh — we walk every stage of
-              construction with intention, craft, and material honesty.
-            </p>
+              <p className="font-sans font-light text-arciform-muted text-xs sm:text-sm md:text-base leading-relaxed max-w-xl lg:max-w-2xl">
+                From Bhoomi Pujan to Griha Pravesh — we walk every stage of
+                construction with intention, craft, and material honesty.
+              </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              {[
-                ["1100+", "Projects Delivered"],
-                ["26", "Years of Practice"],
-              ].map(([val, label]) => (
-                <div key={label} style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-                  <span
-                    className="font-sans text-[1.6rem] font-bold tracking-tight text-arciform-ink"
-                  >
-                    {val}
-                  </span>
-                  <span
-                    className="font-mono text-[0.75rem] font-normal uppercase tracking-[0.06em] text-neutral-400"
-                  >
-                    {label}
-                  </span>
-                </div>
-              ))}
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {[
+                  ["1100+", "Projects Delivered"],
+                  ["26",    "Years of Practice"],
+                ].map(([val, label]) => (
+                  <div key={label} style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
+                    <span className="font-sans text-[1.6rem] font-bold tracking-tight text-arciform-ink">
+                      {val}
+                    </span>
+                    <span className="font-mono text-[0.75rem] font-normal uppercase tracking-[0.06em] text-neutral-400">
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </motion.div>
+          </MaskReveal>
         </div>
 
-        {/* Image / Elevation */}
+        {/* ── Image / Elevation ── */}
         <div
           style={{
             display: "flex",
@@ -195,31 +185,40 @@ export default function Hero() {
                 zIndex: 2,
               }}
             />
-            
-            {/* Image Wrapper for Clip Path Reveal */}
-            <motion.div
-              initial={{ clipPath: "inset(0 100% 0 0)" }}
-              animate={{ clipPath: "inset(0 0% 0 0)" }}
-              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-              style={{ overflow: "hidden", position: "relative" }}
-            >
-              <motion.img
-                src="/hero.png"
-                alt="Architectural project concept"
-                initial={{ scale: 1.06 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  height: "auto",
-                  aspectRatio: "1.15",
-                  objectFit: "cover",
-                  background: "var(--color-arciform-card)",
-                  border: "1px solid var(--color-arciform-border)",
-                }}
+
+            {/* Image with shutter reveal built in-line (avoids double overflow clip issue) */}
+            <div style={{ overflow: "hidden", position: "relative" }}>
+              {/* Shutter overlay */}
+              <motion.div
+                initial={{ scaleY: 1 }}
+                animate={{ scaleY: 0 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                style={{ transformOrigin: "top", position: "absolute", inset: 0, background: "#EBEBEB", zIndex: 5, pointerEvents: "none" }}
               />
-            </motion.div>
+              <motion.div
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                style={{ overflow: "hidden", position: "relative" }}
+              >
+                <motion.img
+                  src="/hero.png"
+                  alt="Architectural project concept"
+                  initial={{ scale: 1.06 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "auto",
+                    aspectRatio: "1.15",
+                    objectFit: "cover",
+                    background: "var(--color-arciform-card)",
+                    border: "1px solid var(--color-arciform-border)",
+                  }}
+                />
+              </motion.div>
+            </div>
 
             <div
               style={{
@@ -246,7 +245,7 @@ export default function Hero() {
           position: "absolute",
           bottom: "2.5rem",
           left: "50%",
-          transform: "translateX(-50%)", // Will combine with motion y safely if not conflicting
+          transform: "translateX(-50%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -254,43 +253,45 @@ export default function Hero() {
           zIndex: 1,
         }}
       >
-        <span
-          className="font-sans text-[0.68rem] font-medium uppercase tracking-[0.14em] text-arciform-muted"
-        >
-          Scroll to explore
-        </span>
-        {/* Animated scroll pill */}
-        <div
-          style={{
-            width: "22px",
-            height: "36px",
-            border: "1.5px solid var(--muted)",
-            borderRadius: "12px",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              top: "6px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "4px",
-              height: "8px",
-              background: "var(--ink)",
-              borderRadius: "2px",
-              animation: "scrollDot 1.8s ease-in-out infinite",
-            }}
-          />
-        </div>
+        <MagneticButton>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.6rem" }}>
+            <span className="font-sans text-[0.68rem] font-medium uppercase tracking-[0.14em] text-arciform-muted">
+              Scroll to explore
+            </span>
+            {/* Animated scroll pill */}
+            <div
+              style={{
+                width: "22px",
+                height: "36px",
+                border: "1.5px solid var(--muted)",
+                borderRadius: "12px",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: "6px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "4px",
+                  height: "8px",
+                  background: "var(--ink)",
+                  borderRadius: "2px",
+                  animation: "scrollDot 1.8s ease-in-out infinite",
+                }}
+              />
+            </div>
+          </div>
+        </MagneticButton>
       </motion.div>
 
       <style>{`
         @keyframes scrollDot {
-          0%   { top: 6px; opacity: 1; }
+          0%   { top: 6px;  opacity: 1; }
           70%  { top: 18px; opacity: 0.3; }
-          100% { top: 6px; opacity: 1; }
+          100% { top: 6px;  opacity: 1; }
         }
       `}</style>
     </section>

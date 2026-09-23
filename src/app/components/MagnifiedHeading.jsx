@@ -70,7 +70,7 @@ export default function MagnifiedHeading() {
 
   const Content = () => (
     <h1
-      className="font-bold tracking-[-0.04em] text-arciform-ink font-sans text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-[7.5rem] leading-[1.1]"
+      className="font-bold tracking-[-0.04em] text-arciform-ink font-sans text-6xl sm:text-6xl md:text-5xl md:lg:ml-50 lg:text-6xl xl:text-8xl 2xl:text-[7.5rem] leading-[1.1]"
     >
       {headingLines.map((line, i) => (
         <span key={i} className="block overflow-hidden pb-[0.1em]">
@@ -87,6 +87,7 @@ export default function MagnifiedHeading() {
             }`}
             style={{
               fontFamily: line.isItalic ? "var(--font-playfair), Georgia, serif" : "inherit",
+              color:line.isItalic?"#C06C47":"#000000ff"
             }}
           >
             {line.text}

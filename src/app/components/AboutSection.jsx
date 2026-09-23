@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useRef } from "react";
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
+import MaskReveal from "./MaskReveal";
+import ShutterReveal from "./ShutterReveal";
 
 export default function AboutSection() {
   const containerRef = useRef(null);
@@ -10,10 +11,13 @@ export default function AboutSection() {
     target: containerRef,
     offset: ["start end", "end start"],
   });
-  const yParallax = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+  const yParallax = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
   return (
-    <section ref={containerRef} id="studio" className="relative w-full py-14 px-4 sm:px-6 md:px-10 lg:px-16 lg:py-28 2xl:py-36 bg-arciform-bg overflow-hidden flex flex-col items-center border-t border-arciform-border">
+    <section ref={containerRef} id="studio" style={{
+      paddingTop:"7vw",
+      paddingBottom:"7vw"
+    }} className="relative w-full py-[3vw] px-4 sm:px-6 md:px-10 lg:px-16  2xl:py-36 bg-arciform-bg overflow-hidden flex flex-col items-center border-t border-arciform-border">
       
       {/* Background Architectural Grid Lines */}
       <div className="absolute inset-0 pointer-events-none grid grid-cols-1 lg:grid-cols-4 gap-8 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto px-6 md:px-12 lg:px-16 opacity-50">
@@ -38,22 +42,43 @@ export default function AboutSection() {
         className="relative z-10 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto flex flex-col"
       >
         {/* Header Area */}
-        <div className="flex flex-col items-start mb-20 max-w-4xl">
+        <div style={{paddingBlockEnd:"4vw"}} className="flex flex-col items-start mb-20 max-w-4xl">
           <div className="flex items-center gap-3 mb-6">
-            <span className="h-[1px] w-8 bg-arciform-border" />
+            {/* Line draw animation */}
+            <motion.span
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              style={{ transformOrigin: "left" }}
+              className="inline-block h-[1px] w-8 bg-arciform-border"
+            />
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-neutral-400">
-              04 // PRACTICE & LEADERSHIP
+              04 // PRACTICE &amp; LEADERSHIP
             </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-arciform-ink leading-[1.1] mb-8">
-            Built upon rigor, guided by intuition and{" "}
-            <span className="font-serif italic font-normal text-arciform-accent">
-              technical precision.
-            </span>
-          </h2>
-          <p className="font-sans text-xs sm:text-sm md:text-base text-arciform-muted leading-relaxed max-w-xl lg:max-w-2xl">
-            For over two decades, our atelier has united chartered architects, structural engineers, and vastu consultants to translate complex client briefs into enduring built form.
-          </p>
+          <MaskReveal>
+            <h2 className="text-5xl sm:text-5xl md:text-7xl lg:text-7xl font-bold tracking-tight text-arciform-ink leading-[1.1] mb-8">
+              Built upon rigor, guided by intuition and{" "}
+              <span className="font-serif italic font-normal text-arciform-accent">
+                technical precision.
+              </span>
+            </h2>
+          </MaskReveal>
+          <MaskReveal delay={0.1}>
+            <p className="font-sans text-xs sm:text-sm md:text-base text-arciform-muted leading-relaxed max-w-xl lg:max-w-2xl">
+              For over two decades, our atelier has united chartered architects, structural engineers, and vastu consultants to translate complex client briefs into enduring built form.
+            </p>
+          </MaskReveal>
+          {/* Accent line draw */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            style={{ transformOrigin: "left" }}
+            className="h-[1px] w-12 bg-arciform-accent mt-8"
+          />
         </div>
 
         {/* Grid & Content Layout (Asymmetric Monograph Split) */}
@@ -68,14 +93,14 @@ export default function AboutSection() {
                 <span className="absolute -bottom-2 -left-2 font-mono text-xs text-neutral-400 z-10">+</span>
                 <span className="absolute -bottom-2 -right-2 font-mono text-xs text-neutral-400 z-10">+</span>
                 
-                <div className="relative w-full h-full overflow-hidden bg-arciform-border">
+                <ShutterReveal className="w-full h-full bg-arciform-border">
                   <img 
                     src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80" 
                     alt="Principal Architect" 
                     className="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105" 
                   />
                   <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none" />
-                </div>
+                </ShutterReveal>
              </div>
              
              <div className="mt-10 flex flex-col gap-5 max-w-2xl pl-2">
@@ -98,13 +123,13 @@ export default function AboutSection() {
                  FIG 01 // DRAFTING & SPATIAL PLANNING
                </div>
                <div className="relative w-full aspect-[16/10] border border-neutral-200 p-1.5 bg-white overflow-hidden shadow-sm">
-                 <div className="relative w-full h-full overflow-hidden bg-arciform-border">
+                 <ShutterReveal className="w-full h-full bg-arciform-border">
                    <img 
                      src="https://images.unsplash.com/photo-1581291518655-9523c932deda?auto=format&fit=crop&w=800&q=80" 
                      alt="Drafting" 
                      className="w-full h-full object-cover grayscale mix-blend-multiply group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
                    />
-                 </div>
+                 </ShutterReveal>
                </div>
              </div>
 
@@ -115,13 +140,13 @@ export default function AboutSection() {
                  FIG 02 // TECHNICAL CONSULTATION
                </div>
                <div className="relative w-full aspect-[16/10] border border-neutral-200 p-1.5 bg-white overflow-hidden shadow-sm">
-                 <div className="relative w-full h-full overflow-hidden bg-arciform-border">
+                 <ShutterReveal className="w-full h-full bg-arciform-border" delay={0.1}>
                    <img 
                      src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
                      alt="Consultation" 
                      className="w-full h-full object-cover grayscale mix-blend-multiply group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
                    />
-                 </div>
+                 </ShutterReveal>
                </div>
              </div>
           </div>

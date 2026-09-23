@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import MaskReveal from "./MaskReveal";
 
 const SERVICES = [
   {
@@ -113,12 +114,14 @@ export default function ParallaxServicesSection() {
 
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.02, 1.12]);
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
+  const watermarkY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
   return (
     <section
       ref={containerRef}
       id="services"
-      className="relative w-full bg-[#FAFAFA] text-neutral-900 border-t border-neutral-200 overflow-hidden py-14 px-4 sm:px-6 md:px-10 lg:px-16 lg:py-28 2xl:py-36 flex flex-col items-center"
+      style={{ paddingLeft: "5vw", paddingRight: "5vw" }}
+      className="relative w-full bg-[#FAFAFA] text-neutral-900 border-t border-neutral-200 overflow-hidden py-14 sm:px-6 md:px-10 lg:px-16 lg:py-28 2xl:py-36 flex flex-col items-center"
     >
       {/* Structural Grid Guides */}
       <div className="absolute inset-0 pointer-events-none grid grid-cols-1 lg:grid-cols-6 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto border-x border-neutral-100 lg:px-16">
@@ -130,37 +133,57 @@ export default function ParallaxServicesSection() {
       </div>
 
       {/* Centered Giant 05 Background Index */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none z-0">
-        <span className="text-[7rem] sm:text-[11rem] md:text-[16rem] lg:text-[22rem] 2xl:text-[26rem] font-bold font-sans tracking-tighter text-neutral-100/75 leading-none">
+      <motion.div className="absolute top-0 right-20 select-none pointer-events-none z-0" style={{ y: watermarkY }}>
+        <span className="text-[7rem] sm:text-[11rem] md:text-[16rem] lg:text-[22rem] 2xl:text-[26rem] font-bold font-sans tracking-tighter text-neutral-200/75 leading-none">
           05
         </span>
-      </div>
+      </motion.div>
 
       {/* Main Centered Content Container */}
-      <div className="relative z-10 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-[1560px] 2xl:max-w-[1720px] mx-auto flex flex-col ">
         
         {/* Overline Tag */}
         <div className="flex items-center gap-3 mb-6">
-          <span className="h-[1px] w-8 bg-neutral-300" />
+          <motion.span
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: "left" }}
+            className="inline-block h-[1px] w-8 bg-neutral-300"
+          />
           <p className="font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-400">
-            05 // Practice Disciplines & Scope
+            05 // Practice Disciplines &amp; Scope
           </p>
-          <span className="h-[1px] w-8 bg-neutral-300" />
+          <motion.span
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ transformOrigin: "left" }}
+            className="inline-block h-[1px] w-8 bg-neutral-300"
+          />
         </div>
 
         {/* Centered Editorial Heading */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-bold tracking-tight text-neutral-900 max-w-4xl leading-[1.1] mb-6 text-center">
-          Full-lifecycle architecture, engineering, and{" "}
-          <span className="font-serif italic font-normal text-[#C06C47]">
-            municipal execution.
-          </span>
-        </h2>
+       <div style={{ paddingBottom:"3vw" }}>
+         <MaskReveal>
+           <h2 className="text-6xl sm:text-4xl md:text-6xl lg:text-7xl font-sans font-bold tracking-tight text-neutral-900 max-w-4xl leading-[1.1] mb-6">
+             Full-lifecycle architecture, engineering, and{" "}
+             <span className="font-serif italic font-normal text-[#C06C47]">
+               municipal execution.
+             </span>
+           </h2>
+         </MaskReveal>
 
         {/* Centered Subtext */}
-        <p className="text-xs sm:text-sm md:text-base pb-10 text-neutral-600 font-light max-w-xl lg:max-w-2xl leading-relaxed mb-10 lg:mb-20 text-center">
-          From technical land cadastre to structural commissioning and automated living,
-          each discipline operates under rigorous architectural oversight.
-        </p>
+        <MaskReveal delay={0.1}>
+          <p className="text-sm sm:text-sm md:text-base pb-10 text-neutral-600 font-light max-w-xl lg:max-w-2xl leading-relaxed mb-10 lg:mb-20">
+            From technical land cadastre to structural commissioning and automated living,
+            each discipline operates under rigorous architectural oversight.
+          </p>
+        </MaskReveal>
+       </div>
 
         {/* 2-Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start w-full ">
@@ -264,9 +287,14 @@ function ServiceRow({ service, isActive, onInView, isTouchDevice }) {
       ref={rowRef}
       onMouseEnter={() => !isTouchDevice && onInView()}
       onClick={() => isTouchDevice && onInView()}
-      className={`border-b border-neutral-200 pb-8 lg:pb-10 pt-2 transition-all duration-500 cursor-pointer lg:cursor-default ${
+      className={`border-b py-10 border-neutral-200 pb-8 lg:pb-10 pt-2 transition-all duration-500 cursor-pointer lg:cursor-default ${
         isActive ? "opacity-100" : "opacity-40 lg:opacity-35"
       }`}
+      
+      style={{
+        paddingTop:"1vw",
+        paddingBottom:"1vw"
+      }}
     >
       {/* Top Meta Line */}
       <div className="flex items-center justify-between mb-3 font-mono text-[10px] sm:text-xs">

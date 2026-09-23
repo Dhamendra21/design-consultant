@@ -22,7 +22,7 @@
 }
 
 /* ─── Base Reset ──────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   scroll-behavior: smooth;
@@ -37,6 +37,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  padding: 0;
+  cursor: none; /* Replaced by ArchitectCursor component */
 }
 
 /* ─── Selection ───────────────────────────────────────────────── */
@@ -59,10 +61,16 @@ body {
     padding: 120px 2.5rem 80px !important;
   }
   .hero-grid {
-    grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.9fr) !important;
+    grid-template-columns: minmax(0, 1.4fr) minmax(500px, 0.9fr) !important;
     gap: 2.5rem !important;
   }
   .hero-image-wrapper {
     min-height: 420px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 0 5vw !important;
   }
 }

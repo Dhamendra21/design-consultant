@@ -7,6 +7,7 @@ import ServicesSection from "./components/ServicesSection";
 import CapabilitiesSection from "./components/CapabilitiesSection";
 import Footer from "./components/Footer";
 import SectionDivider from "./components/SectionDivider";
+import ArchitectCursor from "./components/ArchitectCursor";
 
 /**
  * Root page — assembles all major sections.
@@ -16,6 +17,9 @@ import SectionDivider from "./components/SectionDivider";
 export default function HomePage() {
   return (
     <main>
+      {/* ── Custom architectural cursor (desktop only) ── */}
+      <ArchitectCursor />
+
       {/* ── Fixed Navigation ── */}
       <Navbar />
 
