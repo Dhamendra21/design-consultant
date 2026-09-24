@@ -8,6 +8,7 @@ import CapabilitiesSection from "./components/CapabilitiesSection";
 import Footer from "./components/Footer";
 import SectionDivider from "./components/SectionDivider";
 import ArchitectCursor from "./components/ArchitectCursor";
+import ContactSection from "./components/ContactSection";
 
 /**
  * Root page — assembles all major sections.
@@ -41,6 +42,8 @@ export default function HomePage() {
       <ServicesSection />
 
       <CapabilitiesSection/>
+
+    <ContactSection/>
 
       <Footer/>
     </main>
