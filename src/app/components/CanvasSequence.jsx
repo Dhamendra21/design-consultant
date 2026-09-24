@@ -151,7 +151,7 @@ export default function CanvasSequence() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[300vh] bg-[#121212]"
+      className="relative w-full h-[600vh] bg-[#121212]"
     >
       <div className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-between">
         
