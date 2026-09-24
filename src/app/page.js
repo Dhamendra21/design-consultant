@@ -33,7 +33,7 @@ export default function HomePage() {
       {/* ── About Studio Section ── */}
       <AboutSection />
 
-      <SectionDivider chapter="03" title="SPATIAL CADASTRE" />
+      <SectionDivider chapter="04" title="SPATIAL CADASTRE" />
 
       {/* ── Projects Section ── */}
       <ProjectsSection />

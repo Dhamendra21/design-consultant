@@ -30,7 +30,7 @@ export default function AboutSection() {
       {/* Visible Giant 04 Background Index */}
       <motion.div style={{ y: yParallax }} className="absolute top-[20%] left-[80%] -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none z-0">
         <span className="text-[7rem] sm:text-[11rem] md:text-[16rem] lg:text-[22rem] 2xl:text-[26rem] font-bold font-sans tracking-tighter text-arciform-ghost leading-none">
-          04
+          03
         </span>
       </motion.div>
 
@@ -95,11 +95,11 @@ export default function AboutSection() {
                 
                 <ShutterReveal className="w-full h-full bg-arciform-border">
                   <img 
-                    src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80" 
+                    src="./aw-image4.webp" 
                     alt="Principal Architect" 
-                    className="w-full h-full object-cover grayscale transition-transform duration-1000 group-hover:scale-105" 
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
                   />
-                  <div className="absolute inset-0 bg-black/10 mix-blend-multiply pointer-events-none" />
+                  <div className="absolute inset-0 bg-black/10 pointer-events-none group-hover:bg-transparent transition-colors duration-1000" />
                 </ShutterReveal>
              </div>
              
@@ -125,9 +125,9 @@ export default function AboutSection() {
                <div className="relative w-full aspect-[16/10] border border-neutral-200 p-1.5 bg-white overflow-hidden shadow-sm">
                  <ShutterReveal className="w-full h-full bg-arciform-border">
                    <img 
-                     src="https://images.unsplash.com/photo-1581291518655-9523c932deda?auto=format&fit=crop&w=800&q=80" 
+                     src="./aw-image3.webp" 
                      alt="Drafting" 
-                     className="w-full h-full object-cover grayscale mix-blend-multiply group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
+                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
                    />
                  </ShutterReveal>
                </div>
@@ -142,9 +142,9 @@ export default function AboutSection() {
                <div className="relative w-full aspect-[16/10] border border-neutral-200 p-1.5 bg-white overflow-hidden shadow-sm">
                  <ShutterReveal className="w-full h-full bg-arciform-border" delay={0.1}>
                    <img 
-                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
+                     src="aw-image2.webp" 
                      alt="Consultation" 
-                     className="w-full h-full object-cover grayscale mix-blend-multiply group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
+                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
                    />
                  </ShutterReveal>
                </div>
